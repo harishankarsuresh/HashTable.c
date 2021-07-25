@@ -9,11 +9,11 @@
 struct HN{
     int key;
     int data;
-}
+};
 
-struct Hashnode* HT[size];
+struct HN* HA[size];
 
-int HF(int key,int data){
+int HF(int key){
     return key%size;
 }
 
@@ -28,7 +28,7 @@ void insert(int key, int data){
     
     HI = HF(key);
     
-    while(HA[HI]!=NULL && HA[HI]->key != -1){
+    while(HA[HI]!=NULL){
         HI++;
         HI%=size;
     }
@@ -54,25 +54,26 @@ struct HN* search(int key){
 
 
 int delete(int key){
-    HI = HF(key);
+    
+    int HI = HF(key);
     
     while(HA[HI] != NULL){
         if(HA[HI]->key == key){
             free(HA[HI]);
             HA[HI] = NULL;
-            return 0;
+            return 1;
         }
         
         HI++;
         HI%=size;
     }
-    return NULL;
+    return 0;
 }
 
 void display() {
    int i = 0;
 	
-   for(i = 0; i<SIZE; i++) {
+   for(i = 0; i<size; i++) {
 	
       if(HA[i] != NULL)
          printf(" (%d,%d)",HA[i]->key,HA[i]->data);
@@ -83,3 +84,24 @@ void display() {
    printf("\n");
 }
 
+int* twoSum(int* nums, int numsSize, int target, int* returnSize){
+
+    int result[2];
+    
+    for(int i = 0;i<numsSize;i++){
+        insert(nums[i],nums[i]);
+    }
+    
+    for(int i = 0;i<numsSize;i++){
+        if(search(target - nums[i]) != NULL){
+           result[0] = i;
+            for(int j=0;j<numsSize;j++){
+                if(nums[j] == (target - nums[i]))
+                    result[1] = j;
+            }
+            return result; 
+        }
+    
+    }
+    return NULL;
+}
