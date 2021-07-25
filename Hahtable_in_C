@@ -1,0 +1,85 @@
+
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+
+#define size 100
+
+struct HN{
+    int key;
+    int data;
+}
+
+struct Hashnode* HT[size];
+
+int HF(int key,int data){
+    return key%size;
+}
+
+void insert(int key, int data){
+    int HI;
+   struct HN* item;
+    
+    item = (struct HN*)malloc(sizeof(struct HN));
+    
+    item->key = key;
+    item->data = data;
+    
+    HI = HF(key);
+    
+    while(HA[HI]!=NULL && HA[HI]->key != -1){
+        HI++;
+        HI%=size;
+    }
+    
+    HA[HI]=item;
+}
+
+struct HN* search(int key){
+    int HI = HF(key);
+    
+    while(HA[HI] != NULL){
+        if(HA[HI]->key == key)
+            return HA[HI];
+        else{
+            HI++;
+            HI %= size;
+        }
+        
+    }
+    return NULL;
+    
+}
+
+
+int delete(int key){
+    HI = HF(key);
+    
+    while(HA[HI] != NULL){
+        if(HA[HI]->key == key){
+            free(HA[HI]);
+            HA[HI] = NULL;
+            return 0;
+        }
+        
+        HI++;
+        HI%=size;
+    }
+    return NULL;
+}
+
+void display() {
+   int i = 0;
+	
+   for(i = 0; i<SIZE; i++) {
+	
+      if(HA[i] != NULL)
+         printf(" (%d,%d)",HA[i]->key,HA[i]->data);
+      else
+         printf(" ~~ ");
+   }
+	
+   printf("\n");
+}
+
